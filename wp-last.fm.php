@@ -63,6 +63,11 @@ class SfWpLastfm
 	}
 
 	function save_options() {
+		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'] , 'sfwp_lastfm_action_save_options' ) ) {
+			wp_die( __('Nonce check failed', 'sf_wp_lastfm') );
+			return;
+		}
+		
 		if( isset($_REQUEST['lastfm_api_key']) ) {
 			update_option('lastfm_api_key', trim($_REQUEST['lastfm_api_key']) );
 		}
@@ -74,6 +79,7 @@ class SfWpLastfm
 			<h2><? _e('Settings', 'sf_wp_lastfm'); ?> › <? _e('last.fm', 'sf_wp_lastfm') ?></h2>
 			<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 				<input type="hidden" name="sfwp_lastfm_action" value="save_options" />
+				<input type="hidden" name="_wpnonce" value="<? echo wp_create_nonce( 'sfwp_lastfm_action_save_options' ) ?>" />
 				<table class="form-table">
 					<tr>
 						<th><label for="lastfm_api_key"><? _e('API Key', 'sf_wp_lastfm') ?></label></th>
@@ -85,6 +91,7 @@ class SfWpLastfm
 			<h3><? _e('Test', 'sf_wp_lastfm') ?></h3>
 			<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 				<input type="hidden" name="sfwp_lastfm_action" value="test" />
+				<input type="hidden" name="_wpnonce" value="<? echo wp_create_nonce( 'sfwp_lastfm_action_test' ) ?>" />
 				<p class="submit"><input type="submit" value="<? _e('Test Settings', 'sf_wp_lastfm') ?>" class="button-primary" /></p>
 			</form>
 			<? if( isset($this->result) ) : ?>
@@ -96,6 +103,11 @@ class SfWpLastfm
 	}
 
 	private function test() {
+		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'] , 'sfwp_lastfm_action_test' ) ) {
+			wp_die( __('Nonce check failed', 'sf_wp_lastfm') );
+			return;
+		}
+
 		if( !$this->is_ready ) {
 			return false;
 		}
