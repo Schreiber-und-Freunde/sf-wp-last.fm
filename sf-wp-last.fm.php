@@ -137,7 +137,8 @@ class SfWpLastfm
 }
 $sf_wp_lastfm = SfWpLastfm::instance();
 function lastfm_get_recent_tracks($user) {
-	return json_decode( SfWpLastfm::instance()->do_request( 'user.getrecenttracks', array( 'user' => $user ) ) );
+	$recent_tracks = json_decode( SfWpLastfm::instance()->do_request( 'user.getrecenttracks', array( 'user' => $user ) ) );
+	return $recent_tracks->recenttracks->track;
 }
 
 function lastfm_get_user_info($user) {
